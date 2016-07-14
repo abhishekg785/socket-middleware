@@ -1,0 +1,18 @@
+<html>
+<head>
+	<title>Room:<%= room_name %></title>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <script>
+    var room_name = "<%= room_name %>";
+    var socket_connect = function(room){
+    	return io('localhost:3000',{
+    		query:'r_var='+room
+    	});
+    }
+    var socket = socket_connect(room_name);
+  </script>
+</body>
+</html>

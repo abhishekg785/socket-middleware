@@ -1,0 +1,7 @@
+what i learnt:
+
+socket.io uses middleware
+eg:
+io.use(function(socket,next){
+	console.log('middleware');
+});
