@@ -5,3 +5,9 @@ eg:
 io.use(function(socket,next){
 	console.log('middleware');
 });
+
+we have authorization middleware  ,but is depreciated in the latest release
+=> so this is executed every time a new connection is made
+io.set('authorization',function(handshake,callback){
+	callback(null,true);   //two parameterers :first is the error reason and the second one is true of false
+});

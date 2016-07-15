@@ -77,25 +77,32 @@ app.use(function(err, req, res, next) {
 
 
 //middleware demos
-io.use(function(socket,next){
-  console.log('in the middleware');
-  // console.log(socket.request);
-  next();
-});
+// io.use(function(socket,next){
+//   console.log('in the middleware');
+//   // console.log(socket.request);
+//   next();
+// });
 
 //authorization 
-io.set('authorization',function(handshake,callback){
-  console.log('in the authorization middleware');
-  callback(null,true);
-});
+// io.set('authorization',function(handshake,callback){
+//   console.log('in the authorization middleware');
+//   callback(null,true);
+// });
 
 io.sockets.on('connection',function(socket){
-  var room = socket.handshake['query']['r_var'];
+  // console.log(socket.handshake);
+  var room = socket.handshake['query']['roomName'];
   socket.join(room);
+  socket.roomName = room;
   console.log('user joined room'+room);
   socket.on('disconnect',function(){
     console.log('socket discconnect');
   });
+
+  socket.on('new message',function(messageText){
+    io.sockets.in(socket.roomName).emit('new message',{'messageText':messageText});
+  });
+
 });
 
 }

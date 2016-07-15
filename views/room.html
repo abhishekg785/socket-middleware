@@ -3,16 +3,32 @@
 	<title>Room:<%= room_name %></title>
 </head>
 <body>
+<input type = 'text' id = 'message' placeholder = 'Write message'/>
+<input type="submit" id = 'sendMessage' value = 'Send' />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
   <script>
-    var room_name = "<%= room_name %>";
-    var socket_connect = function(room){
-    	return io('localhost:3000',{
-    		query:'r_var='+room
-    	});
+    var room_name = "<%= room_name %>",
+        sendMessage = $('#sendMessage'),
+        message = $('#message');
+
+    var Functions = {
+    	socket_connect:function(room){
+    		return io('localhost:3000',{
+    			query:'roomName='+room
+    		});
+    	}
     }
-    var socket = socket_connect(room_name);
+
+    var socket = Functions.socket_connect(room_name);
+    sendMessage.on('click',function(){
+        messageText = message.val();
+        socket.emit('new message',{'messageText':messageText});
+    });
+
+    socket.on('new message',function(data){
+        console.log(data);
+    });
   </script>
 </body>
 </html>
